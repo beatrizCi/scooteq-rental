@@ -3,19 +3,21 @@ const mysql = require('mysql2');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors()); // Enable CORS
 
 // MySQL connection setup
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'your_password',
-  database: 'your_database'
+  password: 'root',
+  database: 'scooteq'
 });
 
 // Connect to MySQL
@@ -31,7 +33,6 @@ db.connect((err) => {
 app.post('/api/register', (req, res) => {
   const { username, password, email } = req.body;
   const hashedPassword = bcrypt.hashSync(password, 8);
-
   const sql = 'INSERT INTO users (username, password, email) VALUES (?, ?, ?)';
   db.query(sql, [username, hashedPassword, email], (err, result) => {
     if (err) {
@@ -45,6 +46,7 @@ app.post('/api/register', (req, res) => {
 // User login
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
+  console.log('Login request payload:', req.body); // Log the request body
 
   const sql = 'SELECT * FROM users WHERE username = ?';
   db.query(sql, [username], (err, results) => {
