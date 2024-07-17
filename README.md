@@ -44,7 +44,7 @@ To get a local copy up and running, follow these simple steps:
 
 1. **Clone the Repository**
     ```bash
-    git clone https://github.com/your-username/scooteq-rental.git
+    git clone https://github.com/beatrizCi/scooteq-rental.git
     cd scooteq-rental
     ```
 
